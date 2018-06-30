@@ -1,5 +1,6 @@
 std.manifestYamlDoc({
-  "flows": {
+  "tasks": {
     "init": import 'libs/init.libsonnet',
+    "config": import 'libs/config.libsonnet',
   }
 })

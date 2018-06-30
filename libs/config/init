@@ -1,0 +1,6 @@
+ENVIRONMENT=$(./oz env)
+
+if [ ! -f config/environments/${ENVIRONMENT}.yaml ]; then
+  mkdir -p config/environments/
+  cp oz.yaml config/environments/${ENVIRONMENT}.yaml
+fi
