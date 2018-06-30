@@ -33,6 +33,14 @@ build:
 clean:
 	rm -rf $${PWD}/dist;
 
+# make run -s -e CMD="s3 create --aws-profile default"
+# description: run oz command.
+run:
+	make build;
+
+	cd $${PWD}/dist && \
+		./oz $${CMD};
+
 # make test -s
 # description: test oz command.
 test:
