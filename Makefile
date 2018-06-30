@@ -25,7 +25,8 @@ build:
 	jsonnet oz.jsonnet -S >> $${PWD}/dist/oz;
 	chmod +x $${PWD}/dist/oz;
 
-	echo "" > $${PWD}/dist/oz.yaml;
+	echo "dev" > $${PWD}/dist/.ozenv
+	cp $${PWD}/libs/var.definition.yaml $${PWD}/dist/oz.yaml;
 
 # make clean -s
 # description: clean distribution directory.
@@ -35,8 +36,8 @@ clean:
 # make test -s
 # description: test oz command.
 test:
+	# prepare for the test
 	make build -s;
-
 	# test ./oz init
 	if ! $${PWD}/dist/oz init | grep -E '^Hello OZ!!$$' >/dev/null; then \
 		echo $$'\e[31m\xe2\x9c\x96\e[0m ./oz init: Hello OZ' 1>&2; \
