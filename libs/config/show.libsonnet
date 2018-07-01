@@ -1,7 +1,7 @@
 {
   "description": "show parameters for configuration",
   "parameters": [],
-  "script": (importstr './init') + |||
+  "script": (importstr '../script/init-environment') + |||
     cat config/environments/${ENVIRONMENT}.yaml
   |||
 }

@@ -6,7 +6,7 @@
       "required": true
     }
   ],
-  "script": (importstr './init') + |||
+  "script": (importstr '../script/init-environment') + |||
     yq delete -i config/environments/${ENVIRONMENT}.yaml '{{ .key }}'
   |||
 }

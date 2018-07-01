@@ -1,0 +1,12 @@
+if [[ "${AWS_ACCESS_KEY_ID}" = "" ]]; then
+  unset AWS_ACCESS_KEY_ID;
+fi
+if [[ "${AWS_SECRET_ACCESS_KEY}" = "" ]]; then
+  unset AWS_SECRET_ACCESS_KEY;
+fi
+if [[ "${AWS_PROFILE}" != "" ]]; then
+  AWS_DEFAULT_REGION=$(aws configure get aws_default_region)
+  if [[ "${AWS_DEFAULT_REGION}" != "" ]]; then
+    AWS_REGION=${AWS_DEFAULT_REGION}
+  fi
+fi

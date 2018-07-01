@@ -10,7 +10,7 @@
       "required": true
     }
   ],
-  "script": (importstr './init') + |||
+  "script": (importstr '../script/init-environment') + |||
     yq write -i config/environments/${ENVIRONMENT}.yaml '{{ .key }}' {{ .value }}
     cat config/environments/${ENVIRONMENT}.yaml
   |||
