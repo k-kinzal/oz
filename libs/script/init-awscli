@@ -4,9 +4,8 @@ fi
 if [[ "${AWS_SECRET_ACCESS_KEY}" = "" ]]; then
   unset AWS_SECRET_ACCESS_KEY;
 fi
-if [[ "${AWS_PROFILE}" != "" ]]; then
-  AWS_DEFAULT_REGION=$(aws configure get aws_default_region)
-  if [[ "${AWS_DEFAULT_REGION}" != "" ]]; then
-    AWS_REGION=${AWS_DEFAULT_REGION}
-  fi
+AWS_REGION=${AWS_REGION:${AWS_DEFAULT_REGION}}
+if [[ "${AWS_REGION}" = "" && "${AWS_PROFILE}" != "" ]]; then
+  AWS_REGION=${AWS_REGION:-$(aws configure get aws_default_region)}
 fi
+AWS_REGION=${AWS_REGION:-us-east-1}
