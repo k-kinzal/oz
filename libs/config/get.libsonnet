@@ -7,6 +7,6 @@
     }
   ],
   "script": (importstr '../script/init-environment') + |||
-    yq read config/environments/${ENVIRONMENT}.yaml '{{ .key }}'
+    cat config/environments/${ENVIRONMENT}.yaml | yq -c -r ".[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"]"
   |||
 }

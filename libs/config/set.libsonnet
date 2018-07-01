@@ -10,8 +10,14 @@
       "required": true
     }
   ],
-  "script": (importstr '../script/init-environment') + |||
-    yq write -i config/environments/${ENVIRONMENT}.yaml '{{ .key }}' {{ .value }}
-    cat config/environments/${ENVIRONMENT}.yaml
-  |||
+  "steps": [
+    {
+      "script": (importstr '../script/init-environment') + |||
+        cat config/environments/${ENVIRONMENT}.yaml | yq ".[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"]=\"{{ .value }}\"" > config/environments/${ENVIRONMENT}.yaml
+      |||
+    },
+    {
+      "task": "config.show"
+    }
+  ]
 }

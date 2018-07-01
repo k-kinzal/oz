@@ -6,7 +6,14 @@
       "required": true
     }
   ],
-  "script": (importstr '../script/init-environment') + |||
-    yq delete -i config/environments/${ENVIRONMENT}.yaml '{{ .key }}'
-  |||
+  "steps": [
+    {
+      "script": (importstr '../script/init-environment') + |||
+        cat config/environments/${ENVIRONMENT}.yaml | yq -c "del(.[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"])" > config/environments/${ENVIRONMENT}.yaml
+      |||
+    },
+    {
+      "task": "config.show"
+    }
+  ]
 }

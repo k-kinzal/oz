@@ -2,6 +2,6 @@
   "description": "show parameters for configuration",
   "parameters": [],
   "script": (importstr '../script/init-environment') + |||
-    cat config/environments/${ENVIRONMENT}.yaml
+    yq -c . config/environments/${ENVIRONMENT}.yaml
   |||
 }
