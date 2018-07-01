@@ -25,8 +25,8 @@ build:
 	jsonnet oz.jsonnet -S >> $${PWD}/dist/oz;
 	chmod +x $${PWD}/dist/oz;
 
-	echo "dev" > $${PWD}/dist/.ozenv
 	cp $${PWD}/libs/var.definition.yaml $${PWD}/dist/oz.yaml;
+	cd $${PWD}/dist && ./oz env set dev >/dev/null;
 
 # make clean -s
 # description: clean distribution directory.

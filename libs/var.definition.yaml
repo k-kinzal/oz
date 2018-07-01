@@ -5,3 +5,5 @@ aws:
   region: ""
 s3:
   bucket-name: ""
+stack-name: ""
+template-file: ""

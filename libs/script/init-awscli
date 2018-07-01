@@ -1,8 +1,8 @@
 if [[ "${AWS_ACCESS_KEY_ID}" = "" ]]; then
-  unset AWS_ACCESS_KEY_ID;
+  unset AWS_ACCESS_KEY_ID
 fi
 if [[ "${AWS_SECRET_ACCESS_KEY}" = "" ]]; then
-  unset AWS_SECRET_ACCESS_KEY;
+  unset AWS_SECRET_ACCESS_KEY
 fi
 AWS_REGION=${AWS_REGION:${AWS_DEFAULT_REGION}}
 if [[ "${AWS_REGION}" = "" && "${AWS_PROFILE}" != "" ]]; then
