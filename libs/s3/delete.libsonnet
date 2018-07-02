@@ -3,7 +3,8 @@ local utils = import '../utils.libsonnet';
   "description": "Create an S3 bucket to deploy AWS Lambda.",
   "options": utils.options.aws + [
     {
-      "name": "s3.bucket-name"
+      "name": "s3.bucket-name",
+      "required": true
     }
   ],
   "autoenv": true,
@@ -13,15 +14,15 @@ local utils = import '../utils.libsonnet';
         if [[ "${S3_BUCKET_NAME}" == "" || "${S3_BUCKET_NAME}" == "null" ]]; then
       ||| + utils.script.err('Bucket not exists') + |||
         fi
-
-        LENGTH=$(aws --region ${AWS_REGION} s3api list-buckets --query "Buckets[?Name==\`${S3_BUCKET_NAME}\`].Name" | jq 'length')
-        if [[ "${LENGTH}" -eq 0 ]]; then
-      ||| + utils.script.err('Bucket not exists') + |||
-        fi
       |||
     },
     {
       "script": (importstr '../script/init-awscli') + |||
+        LENGTH=$(aws --region ${AWS_REGION} s3api list-buckets --query "Buckets[?Name==\`${S3_BUCKET_NAME}\`].Name" | jq 'length')
+        if [[ "${LENGTH}" -eq 0 ]]; then
+      ||| + utils.script.err('Bucket not exists \\`${S3_BUCKET_NAME}\\`') + |||
+        fi
+
         aws --region ${AWS_REGION} s3api delete-bucket --bucket ${S3_BUCKET_NAME}
       |||
     },

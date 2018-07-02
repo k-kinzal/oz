@@ -1,6 +1,6 @@
 local utils = import '../utils.libsonnet';
 {
-  "description": "Packaging functions",
+  "description": "Planning serverless application model",
   "parameters": [
     {
       "name": "template-file",
@@ -11,7 +11,7 @@ local utils = import '../utils.libsonnet';
   "options": utils.options.aws + [
     {
       "name": "s3.bucket-name",
-      "default": ""
+      "required": true
     },
     {
       "name": "stack-name",
@@ -32,25 +32,19 @@ local utils = import '../utils.libsonnet';
       }
     },
     {
-      "script": |||
-        if [[ "${STACK_NAME}" = "" ]]; then
-          STACK_NAME=$(date +%s | openssl sha | cut -c 1-12)
-        fi
-
-        ./oz config set stack-name ${STACK_NAME} -o json >/dev/null
-      |||
-    },
-    {
       "script": (importstr '../script/init-awscli') + |||
-        STACK_NAME=$(./oz config get stack-name -o json | head -n 1 | jq -r '.msg')
-        PARAMETERS=$(./oz config get parameters -o json | head -n 1 | jq -r '.msg' | jq -r '.[] | [keys[], values[]] | join("=")')
+        STACK_NAME=$(./oz sam generate-stack-name --stack-name "${STACK_NAME}" -o json | head -n 1 | jq -r '.msg')
+        PARAMETERS=$(./oz sam generate-parameter-string -o json | head -n 1 | jq -r '.msg')
 
-        OUT=$(aws --region ${AWS_REGION} cloudformation deploy --no-execute-changeset --template-file dist/$(basename ${TEMPLATE_FILE} | cut -d'.' -f1)-output.yaml --stack-name ${STACK_NAME} --capabilities CAPABILITY_IAM --parameter-overrides ${PARAMETERS})
-        if [[ "`echo "${OUT}" | wc -l`" -ge 1 ]]; then
+        if [[ "$PARAMETERS" = "" ]]; then
+          OUT=$(aws --region ${AWS_REGION} cloudformation deploy --no-execute-changeset --template-file dist/$(basename ${TEMPLATE_FILE} | cut -d'.' -f1)-output.yaml --stack-name ${STACK_NAME} --capabilities CAPABILITY_IAM)
+        else
+          OUT=$(aws --region ${AWS_REGION} cloudformation deploy --no-execute-changeset --template-file dist/$(basename ${TEMPLATE_FILE} | cut -d'.' -f1)-output.yaml --stack-name ${STACK_NAME} --capabilities CAPABILITY_IAM --parameter-overrides ${PARAMETERS})
+        fi
+        STACK_ARN=$(echo $OUT | grep -o 'arn:aws:cloudformation:.*$')
+        if [[ "${STACK_ARN}" = "" ]]; then
           exit 0;
         fi
-
-        STACK_ARN=$(echo $OUT | grep -o 'arn:aws:cloudformation:.*$')
 
         JSON=$(aws --region ${AWS_REGION} cloudformation describe-change-set --change-set-name ${STACK_ARN});
         CHANGES=$(echo $JSON | jq -r '.Changes[] | .ResourceChange.Action + "-" + .ResourceChange.Replacement + " " + .ResourceChange.LogicalResourceId + " (" + .ResourceChange.PhysicalResourceId + ")"' | sed 's/Modify-False/~/g' | sed 's/Modify-True/-\/+/g' | sed 's/Remove/-/g' | sed 's/Add-/+/g' | sed 's/ ()//g' | sed 's/$/\\n/g' | sed 's/^[[:space:]]*/\\n/g')
