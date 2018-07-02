@@ -13,7 +13,7 @@
   "steps": [
     {
       "script": (importstr '../script/init-environment') + |||
-        cat config/environments/${ENVIRONMENT}.yaml | yq ".[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"]=\"{{ .value }}\"" > config/environments/${ENVIRONMENT}.yaml
+        cat config/environments/${ENVIRONMENT}.yaml | yq -y ".[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"]=\"{{ .value }}\"" > config/environments/${ENVIRONMENT}.yaml
       |||
     },
     {

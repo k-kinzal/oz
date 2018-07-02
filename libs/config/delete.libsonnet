@@ -9,7 +9,7 @@
   "steps": [
     {
       "script": (importstr '../script/init-environment') + |||
-        cat config/environments/${ENVIRONMENT}.yaml | yq -c "del(.[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"])" > config/environments/${ENVIRONMENT}.yaml
+        cat config/environments/${ENVIRONMENT}.yaml | yq -y "del(.[\"$(echo '{{ .key }}' | sed -e 's/\./"]["/g')\"])" > config/environments/${ENVIRONMENT}.yaml
       |||
     },
     {

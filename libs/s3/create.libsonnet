@@ -10,8 +10,6 @@ local utils = import '../utils.libsonnet';
   "steps": [
     {
       "script": (importstr '../script/init-awscli') + |||
-        S3_BUCKET_NAME=${S3_BUCKET_NAME:-$(./oz config get s3.bucket-name -o json | head -n 1 | jq -r '.msg')}
-
         if [[ "${S3_BUCKET_NAME}" == "" || "${S3_BUCKET_NAME}" == "null" ]]; then
           exit 0
         fi
@@ -24,7 +22,6 @@ local utils = import '../utils.libsonnet';
     },
     {
       "script": (importstr '../script/init-awscli') + |||
-        S3_BUCKET_NAME=${S3_BUCKET_NAME:-$(./oz config get s3.bucket-name -o json | head -n 1 | jq -r '.msg')}
         if [[ "${S3_BUCKET_NAME}" = "" || "${S3_BUCKET_NAME}" = "null" ]]; then
           S3_BUCKET_NAME="serverless-application-model-${AWS_REGION}-$(date +%s)"
         fi
