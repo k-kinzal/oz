@@ -3,7 +3,8 @@ local utils = import '../utils.libsonnet';
   "description": "Create an S3 bucket to deploy AWS Lambda.",
   "options": utils.options.aws + [
     {
-      "name": "s3.bucket-name"
+      "name": "s3.bucket-name",
+      "default": ""
     }
   ],
   "autoenv": true,

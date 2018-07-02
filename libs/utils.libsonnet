@@ -3,16 +3,19 @@
     "aws": [
       {
         "name": "aws.profile",
-        "default": "default"
+        "default": ""
       },
       {
-        "name": "aws.access-key-id"
+        "name": "aws.access-key-id",
+        "default": ""
       },
       {
-        "name": "aws.secret-access-key"
+        "name": "aws.secret-access-key",
+        "default": ""
       },
       {
-        "name": "aws.region"
+        "name": "aws.region",
+        "default": ""
       }
     ]
   },

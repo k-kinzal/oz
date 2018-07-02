@@ -25,8 +25,10 @@ build:
 	jsonnet oz.jsonnet -S >> $${PWD}/dist/oz;
 	chmod +x $${PWD}/dist/oz;
 
-	cp $${PWD}/libs/var.definition.yaml $${PWD}/dist/oz.yaml;
 	cd $${PWD}/dist && ./oz env set dev >/dev/null;
+	# FIXME: oz initとしてenvファイルの生成を作る（これないと動かない）
+	mkdir -p $${PWD}/dist/config/environments;
+	touch $${PWD}/dist/config/environments/dev.yaml;
 
 # make clean -s
 # description: clean distribution directory.

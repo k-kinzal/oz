@@ -1,9 +1,0 @@
-aws:
-  profile: ""
-  access-key-id: ""
-  secret-access-key: ""
-  region: ""
-s3:
-  bucket-name: ""
-stack-name: ""
-template-file: ""

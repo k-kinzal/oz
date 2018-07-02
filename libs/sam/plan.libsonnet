@@ -10,10 +10,12 @@ local utils = import '../utils.libsonnet';
   ],
   "options": utils.options.aws + [
     {
-      "name": "s3.bucket-name"
+      "name": "s3.bucket-name",
+      "default": ""
     },
     {
-      "name": "stack-name"
+      "name": "stack-name",
+      "default": ""
     }
   ],
   "autoenv": true,
